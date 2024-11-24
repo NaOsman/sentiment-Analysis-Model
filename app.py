@@ -7,7 +7,7 @@ model = joblib.load('random_forest_model.pkl')  # Load your trained model
 label_encoder = joblib.load('label_encoder.pkl')  # Load the label encoder
 
 # Streamlit UI setup
-st.title("Kabul Superstore's Sentiment Analysis")
+st.title(" Kabul Superstore's Sentiment Analysis")
 
 # Display the questions
 st.write("Please answer the following questions:")
@@ -36,7 +36,8 @@ questions = [
 responses = {}
 
 # Yes/No questions mapped to radio buttons
-yes_no_questions = [2, 3, 7, 8, 10, 11]  # Indices of Yes/No questions (Q3, Q4, Q8, Q9, Q11, Q12)
+# Indices of Yes/No questions (Q3, Q4, Q8, Q9, Q11, Q12)
+yes_no_questions = [2, 3, 7, 8, 10, 11]
 for idx, question in enumerate(questions):
     if idx in yes_no_questions:
         responses[f"Q{idx+1}"] = st.radio(question, ('Yes', 'No'))
@@ -44,8 +45,11 @@ for idx, question in enumerate(questions):
         responses[f"Q{idx+1}"] = st.slider(question, min_value=1, max_value=5)
 
 # Function to encode Yes/No responses
+
+
 def encode_yes_no(x):
     return 5 if x == 'Yes' else 1
+
 
 # Apply encoding for Yes/No questions
 for idx in yes_no_questions:
@@ -64,9 +68,15 @@ if st.button("Submit"):
     # Display result with color based on sentiment
     sentiment = predicted_label[0]
     if sentiment == 'Positive':
-        st.markdown(f'<p style="color: green; font-size: 20px;">Predicted Sentiment: {sentiment}</p>', unsafe_allow_html=True)
+        st.markdown(
+            f'<p style="color: green; font-size: 20px;">Predicted Sentiment: {sentiment}</p>', unsafe_allow_html=True)
     elif sentiment == 'Negative':
-        st.markdown(f'<p style="color: red; font-size: 20px;">Predicted Sentiment: {sentiment}</p>', unsafe_allow_html=True)
+        st.markdown(
+            f'<p style="color: red; font-size: 20px;">Predicted Sentiment: {sentiment}</p>', unsafe_allow_html=True)
     else:
-        st.markdown(f'<p style="color: gray; font-size: 20px;">Predicted Sentiment: {sentiment}</p>', unsafe_allow_html=True)
+        st.markdown(
+            f'<p style="color: gray; font-size: 20px;">Predicted Sentiment: {sentiment}</p>', unsafe_allow_html=True)
 
+    # Display thank you messages after submission
+    st.title("Thank you!")
+    st.title("Your Sentiment Saved Successfully!")
