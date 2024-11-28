@@ -7,7 +7,7 @@ model = joblib.load('random_forest_model.pkl')  # Load your trained model
 label_encoder = joblib.load('label_encoder.pkl')  # Load the label encoder
 
 # Streamlit UI setup
-st.title(" Kabul Superstore's Sentiment Analysis")
+st.title("Superstore Sentiment Analysis")
 
 # Display the questions
 st.write("Please answer the following questions:")
@@ -42,14 +42,31 @@ for idx, question in enumerate(questions):
     if idx in yes_no_questions:
         responses[f"Q{idx+1}"] = st.radio(question, ('Yes', 'No'))
     else:
-        responses[f"Q{idx+1}"] = st.slider(question, min_value=1, max_value=5)
+        # Using select_slider to collect sentiment ratings
+        responses[f"Q{idx+1}"] = st.select_slider(
+            question, 
+            options=["Very Dissatisfied", "Dissatisfied", "Neutral", "Satisfied", "Very Satisfied"]
+        )
+
+# Function to encode sentiment strings to numerical values
+def encode_sentiment(sentiment):
+    sentiment_map = {
+        "Very Dissatisfied": 1,
+        "Dissatisfied": 2,
+        "Neutral": 3,
+        "Satisfied": 4,
+        "Very Satisfied": 5
+    }
+    return sentiment_map.get(sentiment, 3)  # Default to 3 if an invalid sentiment is found
+
+# Apply encoding for all non-Yes/No responses
+for idx in range(len(questions)):
+    if idx not in yes_no_questions:  # Only apply encoding to non-Yes/No questions
+        responses[f"Q{idx+1}"] = encode_sentiment(responses[f"Q{idx+1}"])
 
 # Function to encode Yes/No responses
-
-
 def encode_yes_no(x):
     return 5 if x == 'Yes' else 1
-
 
 # Apply encoding for Yes/No questions
 for idx in yes_no_questions:
