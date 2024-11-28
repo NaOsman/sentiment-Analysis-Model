@@ -7,7 +7,7 @@ model = joblib.load('random_forest_model.pkl')  # Load your trained model
 label_encoder = joblib.load('label_encoder.pkl')  # Load the label encoder
 
 # Streamlit UI setup
-st.title("Superstore Sentiment Analysis")
+st.title(" Kabul stores Sentiment Analysis")
 
 # Display the questions
 st.write("Please answer the following questions:")
